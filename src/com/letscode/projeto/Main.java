@@ -1,6 +1,8 @@
 package com.letscode.projeto;
 
 
+import com.letscode.projeto.entities.Board;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -31,5 +33,8 @@ public class Main {
 //        do {
 //
 //        } while (jogar == true);
+
+        Board.createBoard();
     }
-}
+
+    }
