@@ -1,6 +1,4 @@
 package com.letscode.projeto;
-
-
 import com.letscode.projeto.entities.Board;
 
 import java.util.Arrays;
@@ -9,32 +7,42 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner leitor = new Scanner(System.in);
-	    String[] letrasTabuleiro = {"A","B","C","D","E","F","G","H","I","J"};
-        Integer[] numerosTabuleiro = {0,1,2,3,4,5,6,7,8,9};
-        String movimento = "";
-        int posicaoNumero;
-        String posicaoLetra;
-        Boolean jogar = true;
+        Scanner scan = new Scanner(System.in);
+        String[] lettersBoard = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+        String[] numbersBoard = {" ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        String moviment = "";
+        String numberPosition;
+        String letterPosition;
+        int counter = 10;
+        Boolean play = true;
 
-        System.out.println("Qual será seu movimento? ");
-        movimento = leitor.next();
-        String[] movimentoSeparado = movimento.split("");
+        //Loop principal do jogo
+        do {
+            System.out.println("Qual será seu moviment? ");
+            moviment = scan.next();
 
-        posicaoLetra = movimentoSeparado[0];
-        posicaoNumero = Integer.parseInt(movimentoSeparado[1]);
-        System.out.println(posicaoLetra);
-        System.out.println(posicaoNumero);
+            if (moviment.length() == 2) {
+                String[] movimentoSeparado = moviment.split("");
+                letterPosition = movimentoSeparado[0];
+                numberPosition = movimentoSeparado[1];
 
+                if (!Arrays.asList(lettersBoard).contains(letterPosition)) {
+                    System.out.println("Letra não está contida no tabuleiro");
+                } else {
+                    System.out.println(letterPosition);
+                    System.out.println(numberPosition);
+                    Board.createBoard(numbersBoard, lettersBoard);
+                }
+            } else {
+                System.out.println("Movimento inválido");
+            }
 
-        if (Arrays.asList(letrasTabuleiro).contains(posicaoLetra)) {
-            System.out.println("funcionou");
-        }
-//        do {
-//
-//        } while (jogar == true);
+            counter--;
+            if (counter == 0) {
+                play = false;
+            }
 
-        Board.createBoard();
+        } while (play);
+
     }
-
-    }
+}
