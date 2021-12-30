@@ -23,14 +23,14 @@ public class Player extends Board{
         boolean shipPositioned;
 
         //msm do main
-        String[] lettersBoard = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+        String[] lettersBoard = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 
         int i = 0;
         int rowMatrix = 0;
 
         while (i < lettersBoard.length){
             if (letterPosition.equalsIgnoreCase(lettersBoard[i])){
-                rowMatrix = 2 * i;
+                rowMatrix = (2 * i) + 2;
                 break;
             }
             i ++;
@@ -64,4 +64,6 @@ public class Player extends Board{
     public String getName() {
         return name;
     }
+
+
 }

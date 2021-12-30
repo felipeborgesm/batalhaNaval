@@ -2,6 +2,7 @@ package com.letscode.projeto;
 import com.letscode.projeto.entities.Board;
 import com.letscode.projeto.entities.Opponent;
 import com.letscode.projeto.entities.Player;
+import com.letscode.projeto.services.Controller;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -10,12 +11,13 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-        String[] lettersBoard = {" ", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-        String[] numbersBoard = {" ", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        String[] lettersBoard = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+        String[] numbersBoard = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         String movement = "";
         String numberPosition;
         String letterPosition;
-        int counter = 10;
+        int playerShips = 10;
+        int opponentShips = 10;
         Boolean play = true;
 
         //Começar o jogo e colocar os navios nas posições
@@ -59,8 +61,8 @@ public class Main {
                 letterPosition = splitCoordinate[0];
                 numberPosition = splitCoordinate[1];
             }
-            shipPositioned = player.placeShip(letterPosition, numberPosition, i);
 
+            shipPositioned = player.placeShip(letterPosition, numberPosition, i);
 
             while (shipPositioned == false){
                 System.out.print("Está posição já está ocupada. Por favor insira outra coordenada: ");
@@ -83,6 +85,7 @@ public class Main {
 
         Opponent opponent = new Opponent();
         opponent.placeAllShips();
+        opponent.printBoard(opponent.getBoard());
 
         do {
             System.out.println("Qual será seu movimento? ");
@@ -96,19 +99,55 @@ public class Main {
                 if (!Arrays.asList(lettersBoard).contains(letterPosition)) {
                     System.out.println("Letra não está contida no tabuleiro");
                 } else {
-                    System.out.println(letterPosition);
-                    System.out.println(numberPosition);
-                    Board.createBoard(numbersBoard, lettersBoard);
+                    //System.out.println(letterPosition);
+                    //System.out.println(numberPosition);
+                    int i = 0;
+                    int rowMatrix = 0;
+                    while (i < lettersBoard.length){
+                        if (letterPosition.equalsIgnoreCase(lettersBoard[i])){
+                            rowMatrix = (2 * i) + 2;
+                            break;
+                        }
+                        i ++;
+                    }
+                    //Equanção de conversão: índiceDaMatriz = (2 * posiçãoDesejada) + 3
+                    int columnMatrix = (2 * Integer.parseInt(numberPosition) + 3);
+
+                    Controller.Contato2(opponent.getBoard(), opponent.board2, rowMatrix, columnMatrix);
+                    boolean attack = opponent.attack(player.getBoard());
+
+                    if (Controller.isPositionOccupied(opponent.getBoard(), rowMatrix, columnMatrix) == true) {
+                        opponentShips--;
+                    }
+                    if (attack == true) {
+                        playerShips--;
+                    }
+
+                    player.printBoard();
+                    System.out.println("Número de navios restantes do jogador: " +playerShips);
+                    System.out.println();
+                    opponent.printBoard(opponent.board2);
+                    System.out.println("Número de navios restantes do oponente: " +opponentShips);
+                    System.out.println();
+
                 }
             } else {
                 System.out.println("Movimento inválido");
             }
 
-            counter--;
-            if (counter == 0) {
+            if (opponentShips == 0) {
+                System.out.println("Parabéns, você ganhou");
+                play = false;
+            } else if (playerShips == 0) {
+                System.out.println("Você perdeu");
                 play = false;
             }
 
         } while (play);
+
+        System.out.println();
+        System.out.println("Esses são os tabuleiros: ");
+        opponent.printBoard(opponent.getBoard());
+        player.printBoard();
     }
 }
