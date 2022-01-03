@@ -41,11 +41,10 @@ public class Player extends Board{
 
         boolean isPositionOccupied = Controller.isPositionOccupied(board,rowMatrix,columnMatrix);
 
-
         //verificando se a posição indicada está ocupada
         if (isPositionOccupied == true){
             shipPositioned = false;
-        }else{
+        } else {
         //posição com da matriz
         Ship ship = new Ship(rowMatrix, columnMatrix);
 
@@ -64,6 +63,5 @@ public class Player extends Board{
     public String getName() {
         return name;
     }
-
 
 }

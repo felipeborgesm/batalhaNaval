@@ -81,12 +81,14 @@ public class Main {
         System.out.println("-------- Tabuleiro Pronto --------");
         System.out.println("-------- Começando o jogo --------");
         System.out.println();
-        //Loop principal do jogo
+
 
         Opponent opponent = new Opponent();
         opponent.placeAllShips();
-        opponent.printBoard(opponent.getBoard());
+        //mostra o tabuleiro do oponente com os navios posicionados
+        //opponent.printBoard(opponent.getBoard());
 
+        //Loop principal do jogo
         do {
             System.out.println("Qual será seu movimento? ");
             movement = scan.next();
@@ -99,8 +101,6 @@ public class Main {
                 if (!Arrays.asList(lettersBoard).contains(letterPosition)) {
                     System.out.println("Letra não está contida no tabuleiro");
                 } else {
-                    //System.out.println(letterPosition);
-                    //System.out.println(numberPosition);
                     int i = 0;
                     int rowMatrix = 0;
                     while (i < lettersBoard.length){
@@ -126,7 +126,8 @@ public class Main {
                     player.printBoard();
                     System.out.println("Número de navios restantes do jogador: " +playerShips);
                     System.out.println();
-                    opponent.printBoard(opponent.board2);
+                    //mostra o tabuleiro do oponente apenas com os tiros na agua e os tiros acertados
+                    //opponent.printBoard(opponent.board2);
                     System.out.println("Número de navios restantes do oponente: " +opponentShips);
                     System.out.println();
 
