@@ -1,38 +1,36 @@
 package com.letscode.projeto;
-import com.letscode.projeto.entities.Board;
 import com.letscode.projeto.entities.Opponent;
 import com.letscode.projeto.entities.Player;
 import com.letscode.projeto.services.Controller;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-        String[] lettersBoard = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-        String[] numbersBoard = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        String movement = "";
+        ArrayList<String> playerMovements = new ArrayList<>();
+        String movement;
         String numberPosition;
         String letterPosition;
         int playerShips = 10;
         int opponentShips = 10;
-        Boolean play = true;
+        boolean play = true;
 
         //Começar o jogo e colocar os navios nas posições
         System.out.println("-------------------------------------------");
         System.out.println("               Batalha Naval               ");
         System.out.println("-------------------------------------------");
         System.out.println();
-        System.out.print("Digite o seu nome do jogador: ");
+        System.out.print("Digite o seu nome jogador: ");
         String name = scan.next();
         Player player = new Player(name);
 
         player.printBoard();
 
         System.out.println();
-        System.out.println("Posicione seus submarinos! Você possui 10");
+        System.out.println(Player.getName() +", você possui 10 submarinos, posicione eles no tabuleiro!");
         System.out.println();
 
         //Arrumar essa parte
@@ -40,114 +38,93 @@ public class Main {
             System.out.print("Digite a coordenada para o submarino " + i + ": ");
             String coordinate = scan.next();
 
-            boolean shipPositioned = false;
+            String[] coordinateValidated = Controller.coordinateValidation(coordinate);
 
-            // verificação muito parecida com a do loop principal
-            if (coordinate.length() == 2) {
-                String[] splitCoordinate = coordinate.split("");
-                letterPosition = splitCoordinate[0];
-                numberPosition = splitCoordinate[1];
+            boolean shipPositioned;
 
-                if (!Arrays.asList(lettersBoard).contains(letterPosition)) {
-                    System.out.println("Letra não está contida no tabuleiro");
-                    System.out.print("Digite a letra novamente: ");
-                    letterPosition = scan.next();
-                }
-            } else {
-                System.out.println("Movimento inválido");
-                System.out.print("Digite a coordenada para o submarino " + i + " novamente: ");
+            while (coordinateValidated.length != 2){
+                System.out.print("Insira a nova coordenada do submarino " + i + ": ");
                 coordinate = scan.next();
-                String[] splitCoordinate = coordinate.split("");
-                letterPosition = splitCoordinate[0];
-                numberPosition = splitCoordinate[1];
+                coordinateValidated = Controller.coordinateValidation(coordinate);
             }
 
-            shipPositioned = player.placeShip(letterPosition, numberPosition, i);
+            shipPositioned = player.placeShip(coordinateValidated[0], coordinateValidated[1]);
 
-            while (shipPositioned == false){
-                System.out.print("Está posição já está ocupada. Por favor insira outra coordenada: ");
+            while (!shipPositioned){
+                System.out.print("Está posição já está ocupada. Por favor insira outra coordenada para o submarion " + i + ": ");
                 coordinate = scan.next();
-                String[] splitCoordinate = coordinate.split("");
-                letterPosition = splitCoordinate[0];
-                numberPosition = splitCoordinate[1];
-
-                shipPositioned = player.placeShip(letterPosition, numberPosition, i);
+                String[] splitCoordinate = Controller.coordinateValidation(coordinate);
+                shipPositioned = player.placeShip(splitCoordinate[0], splitCoordinate[1]);
             }
         }
 
         player.printBoard();
-
         System.out.println();
         System.out.println("-------- Tabuleiro Pronto --------");
         System.out.println("-------- Começando o jogo --------");
         System.out.println();
 
-
         Opponent opponent = new Opponent();
         opponent.placeAllShips();
-        //mostra o tabuleiro do oponente com os navios posicionados
+        //MOSTRA O TABULEIRO DO OPONENTE COM OS NAVIOS POSICIONADOS
         //opponent.printBoard(opponent.getBoard());
 
-        //Loop principal do jogo
+        //LOOP PRINCIPAL DO JOGO
         do {
             System.out.println("Qual será seu movimento? ");
             movement = scan.next();
 
-            if (movement.length() == 2) {
-                String[] movimentoSeparado = movement.split("");
-                letterPosition = movimentoSeparado[0];
-                numberPosition = movimentoSeparado[1];
+            String[] movementValidation = Controller.coordinateValidation(movement);
 
-                if (!Arrays.asList(lettersBoard).contains(letterPosition)) {
-                    System.out.println("Letra não está contida no tabuleiro");
+            if (movementValidation.length == 2) {
+                String coordinate = String.join("", movementValidation);
+
+                if (playerMovements.contains(coordinate)) {
+                    System.out.println("Esse movimento já foi feito, tente algum outro.");
+
                 } else {
-                    int i = 0;
-                    int rowMatrix = 0;
-                    while (i < lettersBoard.length){
-                        if (letterPosition.equalsIgnoreCase(lettersBoard[i])){
-                            rowMatrix = (2 * i) + 2;
-                            break;
-                        }
-                        i ++;
-                    }
-                    //Equanção de conversão: índiceDaMatriz = (2 * posiçãoDesejada) + 3
-                    int columnMatrix = (2 * Integer.parseInt(numberPosition) + 3);
+                    playerMovements.add(coordinate);
+                    //PRINT PARA VERIFICAR OS MOVIMENTOS DO JOGADOR
+                    //System.out.println(playerMovements);
 
-                    Controller.Contato2(opponent.getBoard(), opponent.board2, rowMatrix, columnMatrix);
+                    letterPosition = movementValidation[0];
+                    numberPosition = movementValidation[1];
+
+                    int rowMatrix = Controller.convertLetterEnterToMatrixRow(letterPosition);
+                    int columnMatrix = Controller.convertNumberEnterToMatrixColumn(numberPosition);
+
+                    Controller.Contato2(opponent.getBoard(), opponent.getControllBoard(), rowMatrix, columnMatrix);
                     boolean attack = opponent.attack(player.getBoard());
 
-                    if (Controller.isPositionOccupied(opponent.getBoard(), rowMatrix, columnMatrix) == true) {
+                    if (Controller.isPositionOccupied(opponent.getBoard(), rowMatrix, columnMatrix)) {
                         opponentShips--;
                     }
-                    if (attack == true) {
+                    if (attack) {
                         playerShips--;
                     }
 
                     player.printBoard();
-                    System.out.println("Número de navios restantes do jogador: " +playerShips);
+                    System.out.println("Número de navios restantes do jogador: " + playerShips);
                     System.out.println();
-                    //mostra o tabuleiro do oponente apenas com os tiros na agua e os tiros acertados
-                    //opponent.printBoard(opponent.board2);
-                    System.out.println("Número de navios restantes do oponente: " +opponentShips);
+                    //MOSTRA O TABULEIRO DO OPONENTE APENAS COM OS TIROS CERTEIROS E OS TIROS NA AGUA
+                    //opponent.printBoard(opponent.getControllBoard());
+                    System.out.println("Número de navios restantes do oponente: " + opponentShips);
                     System.out.println();
-
                 }
-            } else {
-                System.out.println("Movimento inválido");
             }
 
             if (opponentShips == 0) {
-                System.out.println("Parabéns, você ganhou");
+                System.out.println("PARABÉNS " +Player.getName() +", VOCÊ GANHOU!!!");
                 play = false;
             } else if (playerShips == 0) {
-                System.out.println("Você perdeu");
+                System.out.println("VOCÊ PERDEU, " + Player.getName() +"!");
                 play = false;
             }
 
         } while (play);
 
         System.out.println();
-        System.out.println("Esses são os tabuleiros: ");
+        System.out.println("Os tabuleiros do jogo ficaram assim: ");
         opponent.printBoard(opponent.getBoard());
         player.printBoard();
     }

@@ -1,12 +1,14 @@
 package com.letscode.projeto.entities;
 
-import com.letscode.projeto.services.Controller;
-
+import java.util.ArrayList;
 import java.util.Random;
 
-public class Opponent extends Board {
+import static com.letscode.projeto.services.Controller.Contato;
+import static com.letscode.projeto.services.Controller.isPositionOccupied;
 
-    public String[][] board2 ={
+public class Opponent extends Board {
+    ArrayList<String> opponentMovements = new ArrayList<>();
+    public String[][] controllBoard ={
             {"|","   ","|"," 0 ","|"," 1 ","|"," 2 ","|"," 3 ","|"," 4 ","|"," 5 ","|"," 6 ","|"," 7 ","|"," 8 ","|"," 9 ","|"},
             {"-","---","-","---","-","---","-","---","-","---","-","---","-","---","-","---","-","---","-","---","-","---","-"},
             {"|"," A ","|","   ","|","   ","|","   ","|","   ","|","   ","|","   ","|","   ","|","   ","|","   ","|","   ","|"},
@@ -56,22 +58,18 @@ public class Opponent extends Board {
             int randomColumn = random.nextInt(10);
             int columnMatrix = (2 * randomColumn) + 3;
 
-            boolean isPositionOccupied = Controller.isPositionOccupied(board,rowMatrix,columnMatrix);
+            boolean isPositionOccupied = isPositionOccupied(board,rowMatrix,columnMatrix);
 
-            while (isPositionOccupied == true){
+            while (isPositionOccupied){
                 randomRow = random.nextInt(10);
                 rowMatrix = (2 * randomRow) + 2;
 
                 randomColumn = random.nextInt(10);
                 columnMatrix = (2 * randomColumn) + 3;
 
-                isPositionOccupied = Controller.isPositionOccupied(board,rowMatrix,columnMatrix);
+                isPositionOccupied = isPositionOccupied(board,rowMatrix,columnMatrix);
             }
             //coordenadas já transformadas
-            Ship ship = new Ship(rowMatrix, columnMatrix);
-
-            this.shipsList[i] = ship;
-
             board[rowMatrix][columnMatrix] = " N ";
          }
     }
@@ -79,15 +77,34 @@ public class Opponent extends Board {
     public boolean attack (String[][] board) {
         boolean attack = false;
         Random random = new Random();
-        int randomRow = random.nextInt(10);
-        int rowMatrix = (2 * randomRow) + 2;
+        boolean loop = true;
 
-        int randomColumn = random.nextInt(10);
-        int columnMatrix = (2 * randomColumn) + 3;
+//      ESSE LOOP FAZ COM O QUE MOVIMENTO NAO SEJA REPETIDO PELA MAQUINA
+        do {
+            int randomRow = random.nextInt(10);
+            int rowMatrix = (2 * randomRow) + 2;
+            String rowMatrix1 = Integer.toString(rowMatrix);
 
-        Controller.Contato(board, rowMatrix, columnMatrix);
-        attack = Controller.isPositionOccupied(board, rowMatrix, columnMatrix);
+            int randomColumn = random.nextInt(10);
+            int columnMatrix = (2 * randomColumn) + 3;
+            String columnMatrix1 = Integer.toString(columnMatrix);
 
+            String coordinate = rowMatrix1 + columnMatrix1;
+
+            if (!opponentMovements.contains(coordinate)) {
+                opponentMovements.add(coordinate);
+                Contato(board, rowMatrix, columnMatrix);
+                attack = isPositionOccupied(board, rowMatrix, columnMatrix);
+                loop = false;
+            }
+
+        } while (loop);
+        //PRINT PARA VERIFICAR OS MOVIMENTOS DA MAQUINA
+        //System.out.println(opponentMovements);
         return attack;
+    }
+
+    public String[][] getControllBoard() {
+        return controllBoard;
     }
 }

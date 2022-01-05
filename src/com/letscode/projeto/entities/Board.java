@@ -1,12 +1,6 @@
 package com.letscode.projeto.entities;
-
-import com.letscode.projeto.services.Controller;
-
-import java.util.Random;
-
 public class Board {
 
-    protected Ship[] shipsList = new Ship[10];
     // tabuleiro como um atributo e não criar ele por uma função
     protected String[][] board = {
             {"|","   ","|"," 0 ","|"," 1 ","|"," 2 ","|"," 3 ","|"," 4 ","|"," 5 ","|"," 6 ","|"," 7 ","|"," 8 ","|"," 9 ","|"},

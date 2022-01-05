@@ -4,63 +4,43 @@ import com.letscode.projeto.services.Controller;
 
 public class Player extends Board{
 
-    private String name;
+    private static String name;
 
     public Player(String name) {
-        this.name = name;
+        Player.name = name;
     }
 
     @Override
     public void printBoard() {
         System.out.println("---------------------------------------------");
-        System.out.println("                   "+ this.name +"                   ");
+        System.out.println("                   "+ name +"                   ");
         System.out.println("---------------------------------------------");
         super.printBoard();
     }
 
-    public boolean placeShip (String letterPosition, String numberPosition, int numOfShip){
+    public boolean placeShip(String letterPosition, String numberPosition){
 
         boolean shipPositioned;
 
-        //msm do main
-        String[] lettersBoard = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-
-        int i = 0;
-        int rowMatrix = 0;
-
-        while (i < lettersBoard.length){
-            if (letterPosition.equalsIgnoreCase(lettersBoard[i])){
-                rowMatrix = (2 * i) + 2;
-                break;
-            }
-            i ++;
-        }
-
-        //Equanção de conversão: índiceDaMatriz = (2 * posiçãoDesejada) + 3
-        int columnMatrix = (2 * Integer.parseInt(numberPosition) + 3);
+        int rowMatrix = Controller.convertLetterEnterToMatrixRow(letterPosition);
+        int columnMatrix = Controller.convertNumberEnterToMatrixColumn(numberPosition);
 
         boolean isPositionOccupied = Controller.isPositionOccupied(board,rowMatrix,columnMatrix);
 
         //verificando se a posição indicada está ocupada
-        if (isPositionOccupied == true){
+        if (isPositionOccupied){
             shipPositioned = false;
         } else {
-        //posição com da matriz
-        Ship ship = new Ship(rowMatrix, columnMatrix);
+            //alterar o tabuleiro do jogador
+            this.board[rowMatrix][columnMatrix] = " N ";
 
-        //colocando o barco dentro da variável
-        this.shipsList[numOfShip] = ship;
-
-        //alterar o tabuleiro do jogador
-        this.board[rowMatrix][columnMatrix] = " N ";
-
-        shipPositioned = true;
+            shipPositioned = true;
         }
 
         return shipPositioned;
     }
 
-    public String getName() {
+    public static String getName() {
         return name;
     }
 
