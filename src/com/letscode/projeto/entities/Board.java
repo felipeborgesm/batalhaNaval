@@ -1,7 +1,13 @@
 package com.letscode.projeto.entities;
+
+import java.util.ArrayList;
+
 public class Board {
 
-    // tabuleiro como um atributo e não criar ele por uma função
+    protected ArrayList<String> movementsList = new ArrayList<>();
+
+    protected int remainingShips = 10;
+
     protected String[][] board = {
             {"|","   ","|"," 0 ","|"," 1 ","|"," 2 ","|"," 3 ","|"," 4 ","|"," 5 ","|"," 6 ","|"," 7 ","|"," 8 ","|"," 9 ","|"},
             {"-","---","-","---","-","---","-","---","-","---","-","---","-","---","-","---","-","---","-","---","-","---","-"},
@@ -43,4 +49,10 @@ public class Board {
     public String[][] getBoard() {
         return board;
     }
+
+    public ArrayList<String> getMovementsList() {return movementsList;}
+
+    public int getRemainingShips() {return remainingShips;}
+
+    public void updateRemainingShips (){this.remainingShips = this.remainingShips - 1;}
 }

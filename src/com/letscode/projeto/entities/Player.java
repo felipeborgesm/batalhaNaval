@@ -2,6 +2,8 @@ package com.letscode.projeto.entities;
 
 import com.letscode.projeto.services.Controller;
 
+import java.util.Scanner;
+
 public class Player extends Board{
 
     private static String name;
@@ -38,6 +40,36 @@ public class Player extends Board{
         }
 
         return shipPositioned;
+    }
+
+    public void setAllShipsPositions (){
+        System.out.println();
+        System.out.println( name +", você possui 10 submarinos, posicione eles no tabuleiro!");
+        System.out.println();
+
+        Scanner scan = new Scanner(System.in);
+
+        for (int i = 0; i < 10; i++){
+            System.out.print("Digite a coordenada para o submarino " + i + ": ");
+            String coordinate = scan.next();
+
+            String[] coordinateValidated = Controller.coordinateValidation(coordinate);
+
+            while (coordinateValidated.length != 2){
+                System.out.print("Insira a nova coordenada do submarino " + i + ": ");
+                coordinate = scan.next();
+                coordinateValidated = Controller.coordinateValidation(coordinate);
+            }
+
+            boolean shipPositioned = placeShip(coordinateValidated[0], coordinateValidated[1]);
+
+            while (!shipPositioned){
+                System.out.print("Está posição já está ocupada. Por favor insira outra coordenada para o submarion " + i + ": ");
+                coordinate = scan.next();
+                String[] splitCoordinate = Controller.coordinateValidation(coordinate);
+                shipPositioned = placeShip(splitCoordinate[0], splitCoordinate[1]);
+            }
+        }
     }
 
     public static String getName() {

@@ -15,7 +15,7 @@ public class Controller {
     }
 
     //se a posicao estiver ocupada, coloca o *, se nao coloca o -
-    public static void Contato (String[][] board, int rowMatrix, int columnMatrix) {
+    public static void attack(String[][] board, int rowMatrix, int columnMatrix) {
         boolean contato;
         contato = isPositionOccupied(board,rowMatrix,columnMatrix);
 
@@ -26,19 +26,6 @@ public class Controller {
         }
     }
 
-    //faz a mesma coissa do Contato, no entanto esse metodo compara os dois tabuleiros do oponente o que será mostrado para o jogador e o que sera mostrado só no final
-    public static void Contato2 (String[][] board, String[][] board2, int rowMatrix, int columnMatrix) {
-        boolean contato;
-        contato = isPositionOccupied(board,rowMatrix,columnMatrix);
-
-        if (!contato ){
-            board[rowMatrix][columnMatrix] = " - ";
-            board2[rowMatrix][columnMatrix] = " - ";
-        } else {
-            board[rowMatrix][columnMatrix] = " * ";
-            board2[rowMatrix][columnMatrix] = " * ";
-        }
-    }
     public static String[] coordinateValidation (String coordinate){
 
         if (coordinate.length() != 2){
