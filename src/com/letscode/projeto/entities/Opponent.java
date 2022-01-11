@@ -4,18 +4,16 @@ import static com.letscode.projeto.services.Controller.*;
 
 public class Opponent extends Board {
 
-    public Opponent() {}
+    public Opponent() {
+        super();
+    }
 
-    public void printBoard(String[][] board) {
+    public void printBoard() {
         System.out.println("---------------------------------------------");
         System.out.println("                   OPONENTE                   ");
         System.out.println("---------------------------------------------");
-        for (String[] line: board){
-            for (String position: line){
-                System.out.print(position);
-            }
-            System.out.println();
-        }
+        super.printBoard();
+
     }
 
     public void placeAllShips () {

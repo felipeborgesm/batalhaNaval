@@ -113,12 +113,12 @@ public class Menu {
             if (opponent.getRemainingShips() == 0) {
                 System.out.println();
                 System.out.println("--------------------------------------------------------------------------------");
-                System.out.println("                                PARABÉNS " + Player.getName() + ", VOCÊ GANHOU!!!");
+                System.out.println("                            PARABÉNS " + Player.getName() + ", VOCÊ GANHOU!!!");
                 loop = false;
             } else if (player.getRemainingShips() == 0) {
                 System.out.println();
                 System.out.println("--------------------------------------------------------------------------------");
-                System.out.println("                                VOCÊ PERDEU, " + Player.getName() + "!");
+                System.out.println("                            VOCÊ PERDEU, " + Player.getName() + "!");
                 loop = false;
             }
 

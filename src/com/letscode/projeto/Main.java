@@ -29,13 +29,13 @@ public class Main {
             Opponent opponent = new Opponent();
             opponent.placeAllShips();
             // IMPORTANTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //opponent.printBoard(opponent.getBoard());
+            opponent.printBoard();
 
             Menu.runGame(player, opponent);
 
             System.out.println();
             System.out.println("Os tabuleiros do jogo ficaram assim: ");
-            opponent.printBoard(opponent.getBoard());
+            opponent.printBoard();
             player.printBoard();
 
             isPlaying = Menu.keepPlaying();
