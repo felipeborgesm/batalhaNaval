@@ -1,5 +1,4 @@
 package com.letscode.projeto.entities;
-
 import com.letscode.projeto.services.Controller;
 
 import java.util.Scanner;

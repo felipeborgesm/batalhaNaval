@@ -1,10 +1,6 @@
 package com.letscode.projeto.entities;
-
 import com.letscode.projeto.services.Controller;
-
-import java.util.Random;
-
-import static com.letscode.projeto.services.Controller.isPositionOccupied;
+import static com.letscode.projeto.services.Controller.*;
 
 public class Opponent extends Board {
 
@@ -22,60 +18,47 @@ public class Opponent extends Board {
         }
     }
 
-    public void placeAllShips (){
-        Random random = new Random();
-
+    public void placeAllShips () {
          for (int i = 0; i < 10; i++){
-            int randomRow = random.nextInt(10);
-            int rowMatrix = (2 * randomRow) + 2;
+             int rowMatrix = sortNumberRow();
+             int columnMatrix = sortNumberColumn();
+             boolean isPositionOccupied = isPositionOccupied(board,rowMatrix,columnMatrix);
 
-            int randomColumn = random.nextInt(10);
-            int columnMatrix = (2 * randomColumn) + 3;
+             while (isPositionOccupied){
+                 rowMatrix = sortNumberRow();
 
-            boolean isPositionOccupied = isPositionOccupied(board,rowMatrix,columnMatrix);
+                 columnMatrix = sortNumberColumn();
 
-            while (isPositionOccupied){
-                randomRow = random.nextInt(10);
-                rowMatrix = (2 * randomRow) + 2;
-
-                randomColumn = random.nextInt(10);
-                columnMatrix = (2 * randomColumn) + 3;
-
-                isPositionOccupied = isPositionOccupied(board,rowMatrix,columnMatrix);
+                 isPositionOccupied = isPositionOccupied(board,rowMatrix,columnMatrix);
             }
-            //coordenadas já transformadas
-            board[rowMatrix][columnMatrix] = " N ";
+             //coordenadas já transformadas
+             board[rowMatrix][columnMatrix] = " N ";
          }
     }
 
     public boolean attack (String[][] board) {
         boolean attack = false;
-        Random random = new Random();
         boolean loop = true;
 
 //      ESSE LOOP FAZ COM O QUE MOVIMENTO NAO SEJA REPETIDO PELA MAQUINA
         do {
-            int randomRow = random.nextInt(10);
-            int rowMatrix = (2 * randomRow) + 2;
-            String rowMatrix1 = Integer.toString(rowMatrix);
+            int numberRow = sortNumberRow();
+            String rowMatrix1 = Integer.toString(numberRow);
 
-            int randomColumn = random.nextInt(10);
-            int columnMatrix = (2 * randomColumn) + 3;
-            String columnMatrix1 = Integer.toString(columnMatrix);
+            int numberColumn = sortNumberColumn();
+            String columnMatrix1 = Integer.toString(numberColumn);
 
             String coordinate = rowMatrix1 + columnMatrix1;
 
             if (!this.movementsList.contains(coordinate)) {
                 this.movementsList.add(coordinate);
-                Controller.attack(board, rowMatrix, columnMatrix);
-                attack = isPositionOccupied(board, rowMatrix, columnMatrix);
+                Controller.attack(board, numberRow, numberColumn);
+                attack = isPositionOccupied(board, numberRow, numberColumn);
                 loop = false;
             }
 
         } while (loop);
-        //PRINT PARA VERIFICAR OS MOVIMENTOS DA MAQUINA
-        //System.out.println(opponentMovements);
+
         return attack;
     }
-
 }

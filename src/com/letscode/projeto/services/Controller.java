@@ -1,7 +1,7 @@
 package com.letscode.projeto.services;
-
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Random;
 
 public class Controller {
 
@@ -75,5 +75,21 @@ public class Controller {
     //Equanção de conversão: índiceDaMatriz = (2 * posiçãoDesejada) + 3
     public static int convertNumberEnterToMatrixColumn (String numberPosition){
         return (2 * Integer.parseInt(numberPosition) + 3);
+    }
+
+    //FUNÇÃO PARA SORTEAR O NUMERO DA LINHA DO OPONENTE
+    public static int sortNumberRow () {
+        Random random = new Random();
+        int randomRow = random.nextInt(10);
+        int rowMatrix = (2 * randomRow) + 2;
+        return rowMatrix;
+    }
+
+    //FUNÇÃO PARA SORTEAR O NUMERO DA COLUNA DO OPONENTE
+    public static int sortNumberColumn () {
+        Random random = new Random();
+        int randomColumn = random.nextInt(10);
+        int columnMatrix = (2 * randomColumn) + 3;
+        return columnMatrix;
     }
 }

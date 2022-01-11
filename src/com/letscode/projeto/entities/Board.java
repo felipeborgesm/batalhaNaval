@@ -1,5 +1,4 @@
 package com.letscode.projeto.entities;
-
 import java.util.ArrayList;
 
 public class Board {
