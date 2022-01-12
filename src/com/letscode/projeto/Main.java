@@ -29,7 +29,7 @@ public class Main {
             Opponent opponent = new Opponent();
             opponent.placeAllShips();
             // IMPORTANTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            opponent.printBoard();
+            //opponent.printBoard();
 
             Menu.runGame(player, opponent);
 
